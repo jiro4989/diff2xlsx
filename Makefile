@@ -36,3 +36,9 @@ cross-build: deps
 .PHONY: test
 test:
 	bash ./script/test.sh
+
+.PHONY: release
+release:
+	git tag ${VERSION}
+	goreleaser --rm-dist
+	go install
