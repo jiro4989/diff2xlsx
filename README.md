@@ -23,7 +23,8 @@ diff2xlsx
 diff2xlsx write -h
 ```
 
-If you want to customize attribute then edit `$HOME/.config/diff2xlsx/style.toml`.
+If you want to customize attribute then edit `$HOME/.config/diff2xlsx/style.toml`.  
+If you use windows then edit `%USERPROFILE%\.config\diff2xlsx\style.toml`.
 
 ## Install
 
