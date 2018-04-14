@@ -43,7 +43,8 @@ test:
 
 .PHONY: release
 release:
+	-rm $(DIST_DIR)/*.tar.gz
 	ls -d $(DIST_DIR)/* | while read -r d; do cp $(COPY_FILES) $$d/; done
 	ls -d $(DIST_DIR)/* | while read -r d; do tar czf $$d.tar.gz $$d; done
-	ghr $(VERSION) $(DIST_DIR)/*.tar.gz
+	ghr $(VERSION) $(DIST_DIR)/
 	go install cmd/*
