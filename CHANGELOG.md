@@ -1,3 +1,7 @@
+## v1.3.4 (2018-04-15)
+
+Fix Makefile
+
 ## v1.3.3 (2018-04-15)
 
 Fix Makefile

@@ -1,12 +1,12 @@
 NAME     := diff2xlsx
-VERSION  := v1.3.3
+VERSION  := v1.3.4
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
 LDFLAGS := -ldflags="-s -w \
-	-X \"github.com/jiro4989/${NAME}/internal/version.Name=$(NAME)\" \
-	-X \"github.com/jiro4989/${NAME}/internal/version.Version=$(VERSION)\" \
-	-X \"github.com/jiro4989/${NAME}/internal/version.Revision=$(REVISION)\" \
+	-X \"github.com/jiro4989/$(NAME)/internal/version.Name=$(NAME)\" \
+	-X \"github.com/jiro4989/$(NAME)/internal/version.Version=$(VERSION)\" \
+	-X \"github.com/jiro4989/$(NAME)/internal/version.Revision=$(REVISION)\" \
 	-extldflags \"-static\""
 
 # mainパッケージ帰属のソース
@@ -45,5 +45,5 @@ test:
 release:
 	ls -d $(DIST_DIR)/* | while read -r d; do cp $(COPY_FILES) $$d/; done
 	ls -d $(DIST_DIR)/* | while read -r d; do tar czf $$d.tar.gz $$d; done
-	ghr ${VERSION} dist/$(VERSION)
+	ghr $(VERSION) $(DIST_DIR)/*.tar.gz
 	go install cmd/*
