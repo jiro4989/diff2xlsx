@@ -1,5 +1,5 @@
 NAME     := diff2xlsx
-VERSION  := v1.3.1
+VERSION  := v1.3.2
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
@@ -43,7 +43,6 @@ test:
 
 .PHONY: release
 release:
-	rm $(DIST_DIR)/*.tar.gz
 	find $(DIST_DIR)/* -type d | while read -r d; do cp $(COPY_FILES) $$d; done
 	ls -d $(DIST_DIR)/* | while read -r d; do tar czf $$d.tar.gz $$d; done
 	ghr ${VERSION} dist/$(VERSION)
