@@ -39,6 +39,6 @@ test:
 
 .PHONY: release
 release:
-	git tag ${VERSION}
+	-git tag ${VERSION}
 	goreleaser --rm-dist
 	go install
