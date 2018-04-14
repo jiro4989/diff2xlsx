@@ -4,7 +4,12 @@ Convert diff to xlsx.
 
 ## Description
 
+This util help to input diff of source code to Excel.
+
+![diff_sample](./img/diff_sample.png)
+
 ## Usage
+
 Standard.
 
 ```bash
@@ -18,6 +23,8 @@ diff2xlsx
 diff2xlsx write -h
 ```
 
+If you want to customize attribute then edit `$HOME/.config/diff2xlsx/style.toml`.
+
 ## Install
 
 To install, use `go get`:
@@ -25,10 +32,6 @@ To install, use `go get`:
 ```bash
 $ go get -d github.com/jiro4989/diff2xlsx
 ```
-
-## TODO
-
-- Customizable color with toml
 
 ## Contribution
 

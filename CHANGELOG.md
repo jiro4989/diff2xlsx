@@ -4,7 +4,7 @@ Add custom with toml.
 
 ### Added
 
-- Add custom with toml.
+- Add custom with toml.(Cell width, height etc...)
 
 ## v1.1.0 (2018-04-14)
 
