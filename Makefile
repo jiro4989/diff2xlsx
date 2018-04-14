@@ -1,5 +1,5 @@
 NAME     := diff2xlsx
-VERSION  := v1.2.0
+VERSION  := v1.2.2
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
