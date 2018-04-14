@@ -5,9 +5,17 @@ Convert diff to xlsx.
 ## Description
 
 ## Usage
+Standard.
 
 ```bash
-git diff | diff2xlsx write -o diff.xlsx
+git --no-pager diff | diff2xlsx write -o diff.xlsx
+```
+
+See help.
+
+```bash
+diff2xlsx
+diff2xlsx write -h
 ```
 
 ## Install
@@ -17,6 +25,10 @@ To install, use `go get`:
 ```bash
 $ go get -d github.com/jiro4989/diff2xlsx
 ```
+
+## TODO
+
+- Customizable color with toml
 
 ## Contribution
 

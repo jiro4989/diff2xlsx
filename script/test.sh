@@ -21,3 +21,5 @@ cat << EOL | ./bin/diff2xlsx write -n -o test/result/no-attribute.xlsx
 - fugapiyo
 + fugapiy0
 EOL
+
+git --no-pager diff | ./bin/diff2xlsx write -o test/result/git-diff.xlsx
