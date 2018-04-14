@@ -51,6 +51,7 @@ func CmdWrite(c *cli.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	s.SetColWidth(float64(styleConf.Width), 2)
 
 	// 標準入力をExcelにひたすら書き込む
 	sc := bufio.NewScanner(os.Stdin)
@@ -61,27 +62,29 @@ func CmdWrite(c *cli.Context) {
 		t = strings.Replace(t, "\t", styleConf.Tab, -1)
 
 		r := s.GetRow(i)
+		r.SetHeight(float64(styleConf.Font.Size))
+
 		c := r.GetCell(columnIndex)
 		c.SetString(t)
 
 		c.SetFont(excl.Font{Size: styleConf.Font.Size, Name: styleConf.Font.Name})
 		c.SetBorder(excl.Border{
-			Left:  &excl.BorderSetting{Style: "hair", Color: "000000"},
-			Right: &excl.BorderSetting{Style: "hair", Color: "000000"},
+			Left:  &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
+			Right: &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
 		})
 
 		// 装飾なしフラグがtrueの時は設定しない
 		if !noAttrFlag {
 			switch {
 			case strings.HasPrefix(t, "+++"), strings.HasPrefix(t, "---"):
-				c.SetFont(excl.Font{Bold: true})
+				c.SetFont(excl.Font{Size: styleConf.Font.Size, Bold: true})
 				c.SetBackgroundColor("FFFFFF")
-			case strings.HasPrefix(t, "@@"):
-				c.SetBackgroundColor("0000FF")
-			case strings.HasPrefix(t, "+"):
-				c.SetBackgroundColor("00FF00")
 			case strings.HasPrefix(t, "-"):
-				c.SetBackgroundColor("FF0000")
+				c.SetBackgroundColor(styleConf.DiffBackgroundColor.Remove)
+			case strings.HasPrefix(t, "+"):
+				c.SetBackgroundColor(styleConf.DiffBackgroundColor.Add)
+			case strings.HasPrefix(t, "@@"):
+				c.SetBackgroundColor(styleConf.DiffBackgroundColor.Range)
 			default:
 				c.SetBackgroundColor("FFFFFF")
 			}
@@ -94,15 +97,15 @@ func CmdWrite(c *cli.Context) {
 	bc := s.GetRow(i - 1).GetCell(columnIndex)
 
 	tc.SetBorder(excl.Border{
-		Left:  &excl.BorderSetting{Style: "hair", Color: "000000"},
-		Right: &excl.BorderSetting{Style: "hair", Color: "000000"},
-		Top:   &excl.BorderSetting{Style: "hair", Color: "000000"},
+		Left:  &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
+		Right: &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
+		Top:   &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
 	})
 
 	bc.SetBorder(excl.Border{
-		Left:   &excl.BorderSetting{Style: "hair", Color: "000000"},
-		Right:  &excl.BorderSetting{Style: "hair", Color: "000000"},
-		Bottom: &excl.BorderSetting{Style: "hair", Color: "000000"},
+		Left:   &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
+		Right:  &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
+		Bottom: &excl.BorderSetting{Style: styleConf.Border.Style, Color: styleConf.Border.Color},
 	})
 
 	if err := sc.Err(); err != nil {

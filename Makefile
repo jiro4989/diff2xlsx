@@ -4,9 +4,9 @@ REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
 LDFLAGS := -ldflags="-s -w \
-	-X \"version.Name=$(NAME)\" \
-	-X \"version.Version=$(VERSION)\" \
-	-X \"version.Revision=$(REVISION)\" \
+	-X \"github.com/jiro4989/${NAME}/internal/version.Name=$(NAME)\" \
+	-X \"github.com/jiro4989/${NAME}/internal/version.Version=$(VERSION)\" \
+	-X \"github.com/jiro4989/${NAME}/internal/version.Revision=$(REVISION)\" \
 	-extldflags \"-static\""
 
 MAIN_FILES := cmd/diff2xlsx.go cmd/commands.go

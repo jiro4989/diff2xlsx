@@ -22,6 +22,7 @@ var StyleFilePath = fmt.Sprintf("%s/.config/%s/style.toml", getEnvHome(), versio
 // StyleConfigはtoml設定ファイルのすべての設定を保持します。
 type StyleConfig struct {
 	Tab                 string
+	Width               int
 	Font                Font
 	DiffBackgroundColor DiffBackgroundColor
 	Border              Border
@@ -57,6 +58,7 @@ func InitConfigFile() error {
 		}
 
 		w, err := os.Create(StyleFilePath)
+		defer w.Close()
 		if err != nil {
 			log.Println(err)
 			return err
@@ -64,6 +66,8 @@ func InitConfigFile() error {
 		enc := toml.NewEncoder(w)
 
 		conf := StyleConfig{
+			Tab:   "    ",
+			Width: 100,
 			Font: Font{
 				Size: 12,
 				Name: "monospace",
