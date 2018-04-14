@@ -66,6 +66,8 @@ func CmdWrite(c *cli.Context) {
 			case strings.HasPrefix(t, "+++"), strings.HasPrefix(t, "---"):
 				c.SetFont(excl.Font{Bold: true})
 				c.SetBackgroundColor("FFFFFF")
+			case strings.HasPrefix(t, "@@"):
+				c.SetBackgroundColor("0000FF")
 			case strings.HasPrefix(t, "+"):
 				c.SetBackgroundColor("00FF00")
 			case strings.HasPrefix(t, "-"):
