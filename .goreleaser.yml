@@ -1,8 +1,6 @@
 builds:
   - binary: diff2xlsx
-    main:
-      - cmd/diff2xlsx.go
-      - cmd/commands.go
+    main: cmd/*.go
     goos:
       - windows
       - darwin
