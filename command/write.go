@@ -47,11 +47,14 @@ func CmdWrite(c *cli.Context) {
 	i := rowIndex
 	for sc.Scan() {
 		t := sc.Text()
+		// TABがあるとexcelの列がズレるので回避
+		t = strings.Replace(t, "\t", "    ", -1)
 
 		r := s.GetRow(i)
 		c := r.GetCell(columnIndex)
 		c.SetString(t)
 
+		c.SetFont(excl.Font{Name: "monospace"})
 		c.SetBorder(excl.Border{
 			Left:  &excl.BorderSetting{Style: "hair", Color: "000000"},
 			Right: &excl.BorderSetting{Style: "hair", Color: "000000"},
@@ -64,9 +67,9 @@ func CmdWrite(c *cli.Context) {
 				c.SetFont(excl.Font{Bold: true})
 				c.SetBackgroundColor("FFFFFF")
 			case strings.HasPrefix(t, "+"):
-				c.SetBackgroundColor("FF0000")
-			case strings.HasPrefix(t, "-"):
 				c.SetBackgroundColor("00FF00")
+			case strings.HasPrefix(t, "-"):
+				c.SetBackgroundColor("FF0000")
 			default:
 				c.SetBackgroundColor("FFFFFF")
 			}
