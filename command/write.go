@@ -7,7 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/BurntSushi/toml"
 	"github.com/codegangsta/cli"
+	"github.com/jiro4989/diff2xlsx/internal/config"
 	"github.com/loadoff/excl"
 )
 
@@ -30,6 +32,14 @@ func CmdWrite(c *cli.Context) {
 		os.Exit(2)
 	}
 
+	if err := config.InitConfigFile(); err != nil {
+		log.Fatal(err)
+	}
+	var styleConf config.StyleConfig
+	if _, err := toml.DecodeFile(config.StyleFilePath, &styleConf); err != nil {
+		log.Fatal(err)
+	}
+
 	w, err := excl.Create()
 	defer w.Save(outPath)
 	if err != nil {
@@ -48,13 +58,13 @@ func CmdWrite(c *cli.Context) {
 	for sc.Scan() {
 		t := sc.Text()
 		// TABがあるとexcelの列がズレるので回避
-		t = strings.Replace(t, "\t", "    ", -1)
+		t = strings.Replace(t, "\t", styleConf.Tab, -1)
 
 		r := s.GetRow(i)
 		c := r.GetCell(columnIndex)
 		c.SetString(t)
 
-		c.SetFont(excl.Font{Name: "monospace"})
+		c.SetFont(excl.Font{Size: styleConf.Font.Size, Name: styleConf.Font.Name})
 		c.SetBorder(excl.Border{
 			Left:  &excl.BorderSetting{Style: "hair", Color: "000000"},
 			Right: &excl.BorderSetting{Style: "hair", Color: "000000"},

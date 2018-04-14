@@ -1,6 +1,14 @@
+## v1.2.0 (2018-04-14)
+
+Add custom with toml.
+
+### Added
+
+- Add custom with toml.
+
 ## v1.1.0 (2018-04-14)
 
-Initial release
+Add color pattern.
 
 ### Added
 

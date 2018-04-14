@@ -4,13 +4,13 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/jiro4989/diff2xlsx/internal/version"
 )
 
 func main() {
-
 	app := cli.NewApp()
-	app.Name = Name
-	app.Version = Version + " " + Revision
+	app.Name = version.Name
+	app.Version = version.Version + " " + version.Revision
 	app.Author = "jiro4989"
 	app.Email = ""
 	app.Usage = "Convert diff to xlsx."

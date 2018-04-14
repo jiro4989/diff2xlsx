@@ -1,18 +1,24 @@
 NAME     := diff2xlsx
-VERSION  := v1.1.0
+VERSION  := v1.2.0
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
-LDFLAGS := -ldflags="-s -w -X \"main.Version=$(VERSION)\" -X \"main.Revision=$(REVISION)\" -extldflags \"-static\""
+LDFLAGS := -ldflags="-s -w \
+	-X \"version.Name=$(NAME)\" \
+	-X \"version.Version=$(VERSION)\" \
+	-X \"version.Revision=$(REVISION)\" \
+	-extldflags \"-static\""
+
+MAIN_FILES := cmd/diff2xlsx.go cmd/commands.go
 
 bin/$(NAME): $(SRCS)
 	go build -a -tags netgo -installsuffix netgo $(LDFLAGS) \
 		-o bin/$(NAME) \
-		cmd/diff2xlsx.go cmd/version.go cmd/commands.go
+		$(MAIN_FILES)
 
 .PHONY: install
 install:
-	go install $(LDFLAGS)
+	go install $(LDFLAGS) $(MAIN_FILES)
 
 .PHONY: clean
 clean:
