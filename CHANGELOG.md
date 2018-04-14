@@ -1,3 +1,7 @@
+## v1.3.0 (2018-04-15)
+
+change release style.
+
 ## v1.2.0 (2018-04-14)
 
 Add custom with toml.

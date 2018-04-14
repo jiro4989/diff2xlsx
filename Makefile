@@ -1,5 +1,5 @@
 NAME     := diff2xlsx
-VERSION  := v1.2.5
+VERSION  := v1.3.0
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
@@ -9,7 +9,14 @@ LDFLAGS := -ldflags="-s -w \
 	-X \"github.com/jiro4989/${NAME}/internal/version.Revision=$(REVISION)\" \
 	-extldflags \"-static\""
 
+# mainパッケージ帰属のソース
 MAIN_FILES := cmd/diff2xlsx.go cmd/commands.go
+
+# 配布物に含めるファイル
+COPY_FILES := README.md CHANGELOG.md
+
+# 配布物の出力先
+DIST_DIR   := dist/$(VERSION)
 
 bin/$(NAME): $(SRCS)
 	go build -a -tags netgo -installsuffix netgo $(LDFLAGS) \
@@ -26,12 +33,9 @@ clean:
 	rm -rf vendor/*
 
 .PHONY: cross-build
-cross-build: deps
-	for os in darwin linux windows; do \
-		for arch in amd64 386; do \
-			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 go build -a -tags netgo -installsuffix netgo $(LDFLAGS) -o dist/$$os-$$arch/$(NAME); \
-		done; \
-	done
+cross-build:
+	rm -rf $(DIST_DIR)
+	bash ./script/cross-build.sh $(NAME) $(VERSION) $(LDFLAGS) $(MAIN_FILES)
 
 .PHONY: test
 test:
@@ -39,6 +43,7 @@ test:
 
 .PHONY: release
 release:
-	-git tag ${VERSION}
-	goreleaser --rm-dist
+	find $(DIST_DIR)/* -type d | while read -r d; do cp $(COPY_FILES) $$d; done
+	ls -d $(DIST_DIR)/* | while read -r d; do tar czf $$d.tar.gz $$d; done
+	ghr ${VERSION} dist/$(VERSION)
 	go install
