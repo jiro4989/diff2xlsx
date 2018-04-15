@@ -45,11 +45,6 @@ test:
 release:
 	-rm $(DIST_DIR)/*.tar.gz
 	ls -d $(DIST_DIR)/* | while read -r d; do cp $(COPY_FILES) $$d/; done
-	ls -d $(DIST_DIR)/* | while read -r d; do \
-		dn=`dirname $$d`; \
-		bn=`basename $$d`; \
-		tar czf $$d.tar.gz -C $$dn $$bn; \
-		done
-	tar czf hoge.tar.gz -C dist/v1.3.5 diff2xlsx_linux_amd64
+	bash ./script/arch.sh $(DIST_DIR)
 	ghr $(VERSION) $(DIST_DIR)/
 	go install cmd/*
