@@ -1,5 +1,5 @@
 NAME     := diff2xlsx
-VERSION  := v1.3.5
+VERSION  := v1.3.6
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
@@ -45,6 +45,12 @@ test:
 release:
 	-rm $(DIST_DIR)/*.tar.gz
 	ls -d $(DIST_DIR)/* | while read -r d; do cp $(COPY_FILES) $$d/; done
-	ls -d $(DIST_DIR)/* | while read -r d; do tar czf $$d.tar.gz $$d; done
+	ls -d $(DIST_DIR)/* | while read -r d; do \
+		dn=`dirname $$d`; \
+		bn=`basename $$d`; \
+		echo $$dn $$bn; \
+		tar czf $$d.tar.gz -C $$dn $$bn; \
+		done
+	tar czf hoge.tar.gz -C dist/v1.3.5 diff2xlsx_linux_amd64
 	ghr $(VERSION) $(DIST_DIR)/
 	go install cmd/*
