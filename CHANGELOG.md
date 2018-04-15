@@ -1,3 +1,7 @@
+## v1.3.8 (2018-04-15)
+
+Code refactoring.
+
 ## v1.3.7 (2018-04-15)
 
 Add release script.

@@ -50,43 +50,46 @@ type Border struct {
 // InitConfigFileはtomlファイルが存在しない時に初期ファイルを生成する。
 func InitConfigFile() error {
 	_, err := os.Stat(StyleFilePath)
-	if err != nil {
-		d := filepath.Dir(StyleFilePath)
-		if err := os.MkdirAll(d, os.ModePerm); err != nil {
-			log.Println(err)
-			return err
-		}
-
-		w, err := os.Create(StyleFilePath)
-		defer w.Close()
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-		enc := toml.NewEncoder(w)
-
-		conf := StyleConfig{
-			Tab:   "    ",
-			Width: 100,
-			Font: Font{
-				Size: 12,
-				Name: "monospace",
-			},
-			DiffBackgroundColor: DiffBackgroundColor{
-				Remove: "FF0000",
-				Add:    "00FF00",
-				Range:  "0000FF",
-			},
-			Border: Border{
-				Style: "hair",
-				Color: "00000",
-			},
-		}
-		if err := enc.Encode(conf); err != nil {
-			log.Println(err)
-			return err
-		}
+	if err == nil {
+		return nil
 	}
+
+	d := filepath.Dir(StyleFilePath)
+	if err := os.MkdirAll(d, os.ModePerm); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	w, err := os.Create(StyleFilePath)
+	defer w.Close()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	enc := toml.NewEncoder(w)
+
+	conf := StyleConfig{
+		Tab:   "    ",
+		Width: 100,
+		Font: Font{
+			Size: 12,
+			Name: "monospace",
+		},
+		DiffBackgroundColor: DiffBackgroundColor{
+			Remove: "FF0000",
+			Add:    "00FF00",
+			Range:  "0000FF",
+		},
+		Border: Border{
+			Style: "hair",
+			Color: "00000",
+		},
+	}
+	if err := enc.Encode(conf); err != nil {
+		log.Println(err)
+		return err
+	}
+
 	return nil
 }
 
