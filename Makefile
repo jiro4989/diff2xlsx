@@ -48,7 +48,6 @@ release:
 	ls -d $(DIST_DIR)/* | while read -r d; do \
 		dn=`dirname $$d`; \
 		bn=`basename $$d`; \
-		echo $$dn $$bn; \
 		tar czf $$d.tar.gz -C $$dn $$bn; \
 		done
 	tar czf hoge.tar.gz -C dist/v1.3.5 diff2xlsx_linux_amd64
