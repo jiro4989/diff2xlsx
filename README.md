@@ -6,7 +6,7 @@ Convert diff to xlsx.
 
 This util help to input diff of source code to Excel.
 
-![diff_sample](./img/diff_sample.png)
+![diff_sample](./doc/img/diff_sample.png)
 
 ## Usage
 
