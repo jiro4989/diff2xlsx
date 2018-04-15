@@ -1,3 +1,7 @@
+## v1.3.7 (2018-04-15)
+
+Add release script.
+
 ## v1.3.6 (2018-04-15)
 
 Change release file structure.
