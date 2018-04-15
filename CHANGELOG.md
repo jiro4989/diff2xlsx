@@ -1,3 +1,7 @@
+## v1.3.9 (2018-04-15)
+
+Update Makefile.
+
 ## v1.3.8 (2018-04-15)
 
 Code refactoring.

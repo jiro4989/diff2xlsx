@@ -1,5 +1,5 @@
 NAME     := diff2xlsx
-VERSION  := v1.3.8
+VERSION  := v1.3.9
 REVISION := $(shell git rev-parse --short HEAD)
 
 SRCS    := $(shell find . -type f -name '*.go')
@@ -18,33 +18,36 @@ COPY_FILES := README.md CHANGELOG.md
 # 配布物の出力先
 DIST_DIR   := dist/$(VERSION)
 
-bin/$(NAME): $(SRCS)
+build: $(SRCS)
 	go build -a -tags netgo -installsuffix netgo $(LDFLAGS) \
 		-o bin/$(NAME) \
 		$(MAIN_FILES)
+	go install cmd/*
 
-.PHONY: install
+test: build
+	bash ./script/test.sh
+
 install:
 	go install $(LDFLAGS) $(MAIN_FILES)
 
-.PHONY: clean
 clean:
 	rm -rf bin/*
 	rm -rf vendor/*
 
-.PHONY: cross-build
+deps:
+	go get -u github.com/golang/dep/cmd/dep
+	go get -u github.com/tcnksm/ghr
+	dep ensure
+
 cross-build:
-	rm -rf $(DIST_DIR)
+	-rm -rf $(DIST_DIR)
 	bash ./script/cross-build.sh $(NAME) $(VERSION) $(LDFLAGS) $(MAIN_FILES)
 
-.PHONY: test
-test:
-	bash ./script/test.sh
-
-.PHONY: release
-release:
-	-rm $(DIST_DIR)/*.tar.gz
+archive: cross-build
 	ls -d $(DIST_DIR)/* | while read -r d; do cp $(COPY_FILES) $$d/; done
 	bash ./script/arch.sh $(DIST_DIR)
+
+release: archive
 	ghr $(VERSION) $(DIST_DIR)/
-	go install cmd/*
+
+.PHONY: build test install clean deps cross-build archive release
